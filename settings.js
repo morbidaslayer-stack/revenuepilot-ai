@@ -1,9 +1,5 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { supabase } from './supabase-client.js';
 import './invoice-pdf.js';
-
-const SUPABASE_URL = 'https://hfevopcpbxqgiolvnmhc.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_KTJfgYW3EOgwO3-2q5GZ0Q_InE2RAHP';
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 const form = document.getElementById('companySettingsForm');
 if (form) {
