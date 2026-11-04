@@ -73,6 +73,11 @@ async function preparePdf(invoiceId, printWindow) {
   const checkoutValid=checkout && /^https:\/\/[a-z0-9.-]+\.lemonsqueezy\.com\/checkout\/buy\/[a-z0-9-]+/i.test(checkout);
   const paymentHtml=isFullyPaid?`<div class="paid-note">Payment received in full. Thank you.</div>`:`
     <section class="payment-section">
+      <h3>PAYMENT SUMMARY</h3>
+      <div class="bank-row"><span>Invoice total</span><b>${escapeHtml(formatMoney(invoice.amount,currency))}</b></div>
+      <div class="bank-row"><span>Payments received</span><b>${escapeHtml(formatMoney(amountReceived,currency))}</b></div>
+      <div class="bank-row"><span>Remaining balance</span><b>${escapeHtml(formatMoney(balanceDue,currency))}</b></div>
+      ${recordedPayments.length?`<p class="bank-instructions">Recorded payments: ${recordedPayments.map(p=>escapeHtml(formatDate(p.payment_date))+" — "+escapeHtml(formatMoney(p.amount,currency))+" ("+escapeHtml(p.method)+")").join("; ")}</p>`:""}
       <h3>PAYMENT OPTIONS</h3>
       <div class="payment-grid">
         <div class="payment-card online">

@@ -25,3 +25,18 @@
 .payment-history-wrap{border-top:1px solid #e8edf3;margin-top:18px;padding-top:12px}.payment-history-wrap h3{font:700 12px 'Manrope',sans-serif;margin:0 0 9px;color:#344158}.payment-history-row{padding:9px 0;border-bottom:1px solid #eef1f5}.payment-history-row strong{display:block;font-size:11px;color:#26334a}.payment-history-row small{display:block;font-size:9px;color:#7c8799;margin-top:3px}
 #paymentMessage{font-size:10px;line-height:1.5;margin-top:10px;color:#168663}
 @media(max-width:600px){.payment-balance-summary{grid-template-columns:1fr}.payment-balance-summary div{flex-direction:row;justify-content:space-between;align-items:center}}
+
+/* Phase 6.1 payment form fixes */
+#paymentForm select{display:block;width:100%;margin-top:7px;min-height:40px;padding:9px 10px;border:1px solid #e1e6ed;border-radius:7px;background:#fff;color:#344158;font:11px 'DM Sans',sans-serif}
+#paymentForm input{min-height:40px}
+#paymentForm .form-row{align-items:start}
+#paymentForm .modal-actions{position:sticky;bottom:0;background:#fff;padding:10px 0 2px}
+#paymentMessage{font-size:11px;line-height:1.5;overflow-wrap:anywhere;min-height:18px;color:#a45c24}
+#paymentForm button:disabled{opacity:.6;cursor:wait}
+@media(max-width:720px){
+ #paymentModal{padding:10px;align-items:center}
+ #paymentModal .modal{width:100%;max-width:520px;max-height:94dvh;padding:17px}
+ #paymentForm .form-row{grid-template-columns:1fr;gap:0}
+ #paymentForm .modal-actions{display:grid;grid-template-columns:1fr 1fr}
+ #paymentForm .modal-actions button{width:100%;min-height:42px}
+}
