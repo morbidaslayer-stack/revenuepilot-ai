@@ -1,7 +1,4 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-const SUPABASE_URL='https://hfevopcpbxqgiolvnmhc.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY='sb_publishable_KTJfgYW3EOgwO3-2q5GZ0Q_InE2RAHP';
-const supabase=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+import { supabase } from './supabase-client.js';
 const $=id=>document.getElementById(id),iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
 let invoices=[],currentUser=null,authMode='login',editingInvoiceId=null,companyProfile=null,paymentTarget=null;
 function money(n){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(Number(n)||0)}
