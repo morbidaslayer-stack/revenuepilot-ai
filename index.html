@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101827">
-<title>RevenuePilot AI — Revenue Operations</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta name="theme-color" content="#101827"><title>RevenuePilot AI — Revenue Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="auth.css">
+<link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="auth.css"><link rel="stylesheet" href="management.css">
 </head>
 <body>
 <section class="auth-screen" id="authScreen"><div class="auth-card">
@@ -16,10 +14,8 @@
 <form id="authForm"><label>Email address<input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
 <label>Password<input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters"></label>
 <button class="primary-button auth-submit" id="authSubmit" type="submit">Sign in</button></form>
-<p class="auth-message" id="authMessage" role="status"></p>
-<p class="auth-switch" id="authSwitch">New to RevenuePilot AI? <button type="button" id="authToggle">Create an account</button></p>
-<p class="auth-security">Your workspace is private. Your invoices are accessible only to your account.</p>
-</div></section>
+<p class="auth-message" id="authMessage" role="status"></p><p class="auth-switch" id="authSwitch">New to RevenuePilot AI? <button type="button" id="authToggle">Create an account</button></p>
+<p class="auth-security">Your workspace is private. Your invoices are accessible only to your account.</p></div></section>
 <div class="app-shell hidden" id="appShell">
 <aside class="sidebar" id="sidebar"><a class="brand" href="#top"><span class="brand-mark">R</span><span>RevenuePilot<span class="brand-ai"> AI</span><small>REVENUE OPERATIONS</small></span></a>
 <div class="workspace-label">WORKSPACE</div><nav class="nav"><a class="nav-item active" href="#overview"><span>◫</span> Overview</a><a class="nav-item" href="#invoices"><span>▤</span> Invoices</a><a class="nav-item" href="#followups"><span>↗</span> Follow-ups</a></nav>
@@ -32,14 +28,18 @@
 <article class="metric-card"><div class="metric-top"><span>Overdue amount</span><span class="metric-icon orange">⌛</span></div><div class="metric-value" id="overdueAmount">$0.00</div><div class="metric-foot"><span class="orange-text" id="overdueCount">0 invoices</span> need attention</div></article>
 <article class="metric-card"><div class="metric-top"><span>Collected this month</span><span class="metric-icon green">↗</span></div><div class="metric-value" id="collectedAmount">$0.00</div><div class="metric-foot">Payments marked as received</div></article>
 <article class="metric-card"><div class="metric-top"><span>Open invoices</span><span class="metric-icon blue">▤</span></div><div class="metric-value" id="openCount">0</div><div class="metric-foot">Awaiting customer payment</div></article></div>
-<div class="section-heading" id="invoices"><div><div class="eyebrow">ACCOUNTS RECEIVABLE</div><h2>Invoice overview</h2><p>Keep every payment conversation moving.</p></div><div class="table-actions"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search client or invoice"></label><button class="secondary-button" id="addInvoice">＋ New invoice</button></div></div>
-<div class="table-card"><div class="table-scroll"><table><thead><tr><th>CLIENT / INVOICE</th><th>AMOUNT</th><th>DUE DATE</th><th>STATUS</th><th></th></tr></thead><tbody id="invoiceRows"></tbody></table></div><div class="empty-state hidden" id="emptyState"><div class="empty-icon">▤</div><strong>No invoices found</strong><span>Add an invoice or adjust your search.</span></div><div class="table-footer"><span id="invoiceCountLabel">0 invoices</span><span>Amounts shown in USD</span></div></div>
+<div class="section-heading" id="invoices"><div><div class="eyebrow">ACCOUNTS RECEIVABLE</div><h2>Invoice overview</h2><p>Search, edit and manage your customer invoices.</p></div>
+<div class="table-actions"><label class="search-box"><span>⌕</span><input id="searchInput" type="search" placeholder="Search client or invoice"></label>
+<select class="status-filter" id="statusFilter" aria-label="Filter invoices"><option value="all">All invoices</option><option value="open">Outstanding</option><option value="overdue">Overdue</option><option value="paid">Paid history</option></select>
+<button class="secondary-button" id="addInvoice">＋ New invoice</button></div></div>
+<div class="table-card"><div class="table-scroll"><table><thead><tr><th>CLIENT / INVOICE</th><th>AMOUNT</th><th>DUE DATE / PAID DATE</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="invoiceRows"></tbody></table></div>
+<div class="empty-state hidden" id="emptyState"><div class="empty-icon">▤</div><strong>No invoices found</strong><span>Try another filter or add an invoice.</span></div><div class="table-footer"><span id="invoiceCountLabel">0 invoices</span><span>Amounts shown in USD</span></div></div>
 <section class="followup-section" id="followups"><div class="section-heading compact"><div><div class="eyebrow">NEXT BEST ACTIONS</div><h2>Follow-up priorities</h2><p>Start with the accounts that need attention.</p></div></div><div class="priority-grid" id="priorityCards"></div></section>
 <footer>© 2026 RevenuePilot AI <span>·</span> Your revenue, in better hands. <span class="footer-demo">Private cloud workspace</span></footer></section></main></div>
-<div class="modal-backdrop hidden" id="invoiceModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">INVOICE DETAILS</div><h2>Add an invoice</h2></div><button class="close-button" data-close="invoiceModal">×</button></div>
+
+<div class="modal-backdrop hidden" id="invoiceModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">INVOICE DETAILS</div><h2 id="invoiceModalTitle">Add an invoice</h2></div><button class="close-button" data-close="invoiceModal">×</button></div>
 <form id="invoiceForm"><label>Client name<input name="client" required maxlength="80" placeholder="e.g. Northstar Studio"></label><div class="form-row"><label>Invoice number<input name="number" required maxlength="40" placeholder="INV-1004"></label><label>Amount (USD)<input name="amount" required type="number" min="0.01" step="0.01" placeholder="1250.00"></label></div>
 <div class="form-row"><label>Issue date<input name="issueDate" required type="date"></label><label>Due date<input name="dueDate" required type="date"></label></div><label>Client email <span class="optional">(optional)</span><input name="email" type="email" placeholder="accounts@client.com"></label>
-<div class="modal-actions"><button type="button" class="secondary-button" data-close="invoiceModal">Cancel</button><button type="submit" class="primary-button">Save invoice</button></div></form></div></div>
+<div class="modal-actions"><button type="button" class="secondary-button" data-close="invoiceModal">Cancel</button><button type="submit" class="primary-button" id="saveInvoiceButton">Save invoice</button></div></form></div></div>
 <div class="modal-backdrop hidden" id="reminderModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">FOLLOW-UP ASSISTANT</div><h2>Payment reminder draft</h2></div><button class="close-button" data-close="reminderModal">×</button></div><p class="modal-description">Review and personalize this draft before sending. Nothing is sent automatically.</p><div class="draft-meta" id="draftMeta"></div><textarea id="reminderDraft" rows="10"></textarea><div class="modal-actions"><button class="secondary-button" data-close="reminderModal">Close</button><button class="primary-button" id="copyReminder">Copy reminder</button></div><div class="copy-feedback" id="copyFeedback"></div></div></div>
-<script type="module" src="app.js"></script>
-</body></html>
+<script type="module" src="app.js"></script></body></html>

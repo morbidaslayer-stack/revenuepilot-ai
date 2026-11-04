@@ -1,0 +1,7 @@
+/* Invoice management controls */
+.status-filter{height:36px;border:1px solid #e3e8ef;border-radius:8px;background:#fff;color:#536176;padding:0 10px;font:11px 'DM Sans',sans-serif;max-width:150px}
+.paid-date{display:block;color:#168663;font-size:9px;margin-top:4px}
+.danger-button{color:#b85e50;border-color:#f0d9d5}
+.danger-button:hover{border-color:#d99a90;color:#a63d30}
+.row-actions{flex-wrap:wrap}
+@media(max-width:720px){.status-filter{flex:0 0 120px;max-width:120px}.table-actions{flex-wrap:wrap}.table-actions .search-box{min-width:100%}.row-actions{justify-content:flex-start}}
