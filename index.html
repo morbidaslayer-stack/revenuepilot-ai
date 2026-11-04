@@ -1,3 +1,24 @@
+<section class="settings-section" id="companySettings">
+  <div class="section-heading compact">
+    <div><div class="eyebrow">WORKSPACE PROFILE</div><h2>Company settings</h2>
+    <p>Manage the business details used in your revenue workspace.</p></div>
+  </div>
+  <div class="settings-card">
+    <form id="companySettingsForm">
+      <div class="settings-grid">
+        <label>Company name<input name="company_name" maxlength="120" placeholder="Your company name" required></label>
+        <label>Contact person<input name="contact_name" maxlength="120" placeholder="Your name"></label>
+        <label>Business email<input name="business_email" type="email" maxlength="254" placeholder="accounts@company.com"></label>
+        <label>Phone number<input name="phone" maxlength="40" placeholder="+1 555 0100"></label>
+        <label>Website<input name="website" type="url" maxlength="255" placeholder="https://company.com"></label>
+        <label>Invoice currency<select name="currency"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — Pound Sterling</option><option value="CAD">CAD — Canadian Dollar</option></select></label>
+        <label>Timezone<input name="timezone" maxlength="80" placeholder="e.g. Africa/Tripoli"></label>
+      </div>
+      <div class="settings-actions"><span id="settingsMessage" role="status"></span><button class="primary-button" id="saveSettingsButton" type="submit">Save company settings</button></div>
+    </form>
+  </div>
+</section>
+
 <!doctype html>
 <html lang="en">
 <head>
