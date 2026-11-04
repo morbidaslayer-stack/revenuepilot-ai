@@ -9,3 +9,4 @@
 #settingsMessage{font-size:11px;color:#168663}
 #saveSettingsButton:disabled{opacity:.6;cursor:wait}
 @media(max-width:640px){.settings-grid{grid-template-columns:1fr}.settings-card{padding:16px}.settings-actions{align-items:stretch;flex-direction:column}}
+<link rel="stylesheet" href="payment-settings.css">
