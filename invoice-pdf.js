@@ -37,7 +37,7 @@ async function preparePdf(invoiceId, printWindow) {
   if(!session?.user) throw new Error('Your session has expired. Please sign in again.');
 
   const {data:invoice,error:invoiceError}=await supabase.from('invoices')
-    .select('client, invoice_number, amount, issue_date, due_date, email, paid, paid_date, issuer_snapshot')
+    .select('client, invoice_number, amount, line_items, issue_date, due_date, email, paid, paid_date, issuer_snapshot')
     .eq('id',invoiceId).single();
   if(invoiceError) throw invoiceError;
 
@@ -99,7 +99,7 @@ async function preparePdf(invoiceId, printWindow) {
   <div class="invoice-title"><h2>INVOICE</h2><div class="muted"># ${escapeHtml(invoice.invoice_number)}</div><span class="status">${state}</span></div></header>
   <section class="details"><div><div class="label">Bill to</div><div class="name">${escapeHtml(invoice.client)}</div><div class="muted">${clientEmail}</div></div>
   <div class="meta"><div class="meta-row"><span>Invoice date</span><strong>${escapeHtml(formatDate(invoice.issue_date))}</strong></div><div class="meta-row"><span>Due date</span><strong>${escapeHtml(formatDate(invoice.due_date))}</strong></div>${invoice.paid_date?`<div class="meta-row"><span>Paid date</span><strong>${escapeHtml(formatDate(invoice.paid_date))}</strong></div>`:''}</div></section>
-  <table><thead><tr><th>DESCRIPTION</th><th>AMOUNT</th></tr></thead><tbody><tr><td>Services provided — Invoice ${escapeHtml(invoice.invoice_number)}</td><td>${escapeHtml(formatMoney(invoice.amount,currency))}</td></tr></tbody></table>
+  <table><thead><tr><th>DESCRIPTION</th><th>QTY</th><th>UNIT PRICE</th><th>LINE TOTAL</th></tr></thead><tbody>${(Array.isArray(invoice.line_items)&&invoice.line_items.length?invoice.line_items:[{description:"Services provided — Invoice "+invoice.invoice_number,quantity:1,unit_price:invoice.amount}]).map(item=>`<tr><td>${escapeHtml(item.description||"Service")}</td><td>${escapeHtml(item.quantity??1)}</td><td>${escapeHtml(formatMoney(item.unit_price??invoice.amount,currency))}</td><td>${escapeHtml(formatMoney((Number(item.quantity)||1)*(Number(item.unit_price)||0),currency))}</td></tr>`).join("")}</tbody></table>
   <div class="totals"><div class="total-row"><span>Total due</span><span>${escapeHtml(formatMoney(invoice.amount,currency))}</span></div></div>
   ${paymentHtml}<footer class="footer"><strong>Thank you for your business.</strong>Please arrange payment by the due date shown above. Contact us if you have any questions.</footer>
   <p class="print-tip">Choose “Save as PDF” in your browser's print destination to download this invoice.</p></div>
