@@ -56,25 +56,24 @@ if (form) {
   });
   loadCompanySettings().catch(error => { message.textContent = 'Could not load settings: ' + (error.message || 'Unknown error'); });
 
-  // Inject the payment settings panel without changing the existing page markup.
+  // Inject the bank-transfer settings panel without changing the existing page markup.
   const section = document.getElementById('companySettings');
   if (section && !document.getElementById('paymentSettingsForm')) {
     const panel = document.createElement('div');
     panel.className = 'settings-card payment-settings-card';
     panel.innerHTML = `
       <div class="eyebrow">INVOICE PAYMENT OPTIONS</div>
-      <h3>Payment methods</h3>
-      <p class="payment-help">These details appear on PDF invoices. Keep your bank information accurate and use a product-specific Lemon Squeezy checkout link.</p>
+      <h3>BIAT bank transfer</h3>
+      <p class="payment-help">Your bank details are stored in your private workspace. They appear on PDF invoices only when you select “BIAT bank transfer” for that invoice.</p>
       <form id="paymentSettingsForm">
         <div class="settings-grid">
-          <label>Lemon Squeezy checkout URL<input name="lemon_squeezy_checkout_url" type="url" maxlength="500" placeholder="https://store.lemonsqueezy.com/checkout/buy/…" required></label>
           <label>Bank name<input name="bank_name" maxlength="120" placeholder="BIAT" required></label>
           <label>Account holder name<input name="bank_account_name" maxlength="160" placeholder="Account holder as registered" required></label>
           <label>IBAN<input name="bank_iban" maxlength="40" autocomplete="off" placeholder="Enter your IBAN" required></label>
           <label>SWIFT / BIC<input name="bank_swift_bic" maxlength="20" placeholder="Bank SWIFT/BIC" required></label>
           <label>Bank transfer instructions<input name="bank_payment_instructions" maxlength="500" placeholder="Include invoice number as payment reference"></label>
         </div>
-        <div class="settings-actions"><span id="paymentSettingsMessage" role="status"></span><button class="primary-button" id="savePaymentSettingsButton" type="submit">Save payment details</button></div>
+        <div class="settings-actions"><span id="paymentSettingsMessage" role="status"></span><button class="primary-button" id="savePaymentSettingsButton" type="submit">Save bank details</button></div>
       </form>`;
     section.appendChild(panel);
 
@@ -87,7 +86,7 @@ if (form) {
       if (sessionError) throw sessionError;
       if (!session?.user) throw new Error('Sign in to manage payment details.');
       const { data, error } = await supabase.from('invoice_payment_settings')
-        .select('lemon_squeezy_checkout_url, bank_name, bank_account_name, bank_iban, bank_swift_bic, bank_payment_instructions')
+        .select('bank_name, bank_account_name, bank_iban, bank_swift_bic, bank_payment_instructions')
         .eq('user_id', session.user.id).maybeSingle();
       if (error) throw error;
       if (data) for (const [key, value] of Object.entries(data)) {
@@ -104,14 +103,8 @@ if (form) {
         if (sessionError) throw sessionError;
         if (!session?.user) throw new Error('Your session has expired. Please sign in again.');
         const v = Object.fromEntries(new FormData(paymentForm).entries());
-        const checkout = String(v.lemon_squeezy_checkout_url || '').trim();
-        const parsed = new URL(checkout);
-        if (parsed.protocol !== 'https:' || !parsed.hostname.endsWith('lemonsqueezy.com')) {
-          throw new Error('Enter a valid HTTPS Lemon Squeezy checkout URL.');
-        }
         const record = {
           user_id: session.user.id,
-          lemon_squeezy_checkout_url: checkout,
           bank_name: String(v.bank_name || '').trim(),
           bank_account_name: String(v.bank_account_name || '').trim(),
           bank_iban: String(v.bank_iban || '').replace(/\s+/g, '').toUpperCase(),
@@ -124,13 +117,13 @@ if (form) {
         }
         const { error } = await supabase.from('invoice_payment_settings').upsert(record, { onConflict: 'user_id' });
         if (error) throw error;
-        paymentMessage.textContent = 'Payment methods saved to your private workspace.';
+        paymentMessage.textContent = 'Bank-transfer details saved to your private workspace.';
       } catch (error) {
-        paymentMessage.textContent = error.message || 'Could not save payment settings.';
+        paymentMessage.textContent = error.message || 'Could not save bank details.';
       } finally {
         paymentButton.disabled = false;
       }
     });
-    loadPaymentSettings().catch(error => { paymentMessage.textContent = 'Payment settings: ' + (error.message || 'Could not load. Run the SQL migration first.'); });
+    loadPaymentSettings().catch(error => { paymentMessage.textContent = 'Bank settings: ' + (error.message || 'Could not load. Check that the payment settings table exists.'); });
   }
 }
