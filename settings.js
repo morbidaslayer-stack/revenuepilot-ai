@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import './invoice-pdf.js';
 
 const SUPABASE_URL = 'https://hfevopcpbxqgiolvnmhc.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_KTJfgYW3EOgwO3-2q5GZ0Q_InE2RAHP';
