@@ -50,6 +50,14 @@ async function preparePdf(invoiceId, printWindow) {
     issuer=profile||issuer;
   }
 
+  const {data:receivedRows,error:receivedError}=await supabase.from('invoice_payments').select('amount,payment_date,method,reference').eq('invoice_id',invoiceId).order('payment_date',{ascending:false});
+  if(receivedError) throw new Error('Could not load payment history: '+receivedError.message);
+  const recordedPayments=receivedRows||[];
+  const receivedAmount=recordedPayments.reduce((sum,p)=>sum+Number(p.amount||0),0);
+  const legacyPaid=!!invoice.paid&&!recordedPayments.length;
+  const amountReceived=legacyPaid?Number(invoice.amount):receivedAmount;
+  const balanceDue=Math.max(0,Number(invoice.amount)-amountReceived);
+  const isFullyPaid=legacyPaid||balanceDue<0.005;
   const {data:payments,error:paymentError}=await supabase.from('invoice_payment_settings')
     .select('lemon_squeezy_checkout_url,bank_name,bank_account_name,bank_iban,bank_swift_bic,bank_payment_instructions')
     .eq('user_id',session.user.id).maybeSingle();
@@ -58,12 +66,12 @@ async function preparePdf(invoiceId, printWindow) {
   const currency=issuer.currency||'USD';
   const companyName=issuer.company_name||'Your Company';
   const initials=companyName.split(/\s+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase()||'CO';
-  const state=invoice.paid?'PAID':(invoice.due_date<new Date().toISOString().slice(0,10)?'OVERDUE':'UNPAID');
+  const state=isFullyPaid?'PAID':(invoice.due_date<new Date().toISOString().slice(0,10)?'OVERDUE':(amountReceived>0?'PARTIALLY PAID':'UNPAID'));
   const contact=[issuer.contact_name,issuer.business_email,issuer.phone,issuer.website].filter(Boolean).map(escapeHtml).join('<br>');
   const clientEmail=invoice.email?`<br>${escapeHtml(invoice.email)}`:'';
   const checkout=payments?.lemon_squeezy_checkout_url;
   const checkoutValid=checkout && /^https:\/\/[a-z0-9.-]+\.lemonsqueezy\.com\/checkout\/buy\/[a-z0-9-]+/i.test(checkout);
-  const paymentHtml=invoice.paid?`<div class="paid-note">Payment received${invoice.paid_date?' on '+escapeHtml(formatDate(invoice.paid_date)):''}. Thank you.</div>`:`
+  const paymentHtml=isFullyPaid?`<div class="paid-note">Payment received in full. Thank you.</div>`:`
     <section class="payment-section">
       <h3>PAYMENT OPTIONS</h3>
       <div class="payment-grid">
