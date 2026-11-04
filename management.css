@@ -18,3 +18,10 @@
 .invoice-totals-editor .grand-total{border-top:1px solid #e8edf3;margin-top:5px;padding-top:10px;color:#26334a;font-size:13px}
 .line-items-editor #addLineItem{font-size:10px;padding:8px 10px}
 @media(max-width:600px){.line-item-row{grid-template-columns:minmax(100px,1fr) 60px 85px 25px}.item-line-total{grid-column:1/4;text-align:right}.line-item-row .remove-line-item{grid-column:4;grid-row:1}}
+
+/* Phase 6 payment tracking */
+.payment-balance-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;background:#f6f8fb;border:1px solid #e8edf3;border-radius:9px;padding:12px;margin:12px 0 16px}
+.payment-balance-summary div{display:flex;flex-direction:column;gap:5px}.payment-balance-summary span{font-size:9px;color:#7b8798}.payment-balance-summary strong{font-size:12px;color:#29364b}.payment-balance-summary .balance-due strong{color:#c16d31}
+.payment-history-wrap{border-top:1px solid #e8edf3;margin-top:18px;padding-top:12px}.payment-history-wrap h3{font:700 12px 'Manrope',sans-serif;margin:0 0 9px;color:#344158}.payment-history-row{padding:9px 0;border-bottom:1px solid #eef1f5}.payment-history-row strong{display:block;font-size:11px;color:#26334a}.payment-history-row small{display:block;font-size:9px;color:#7c8799;margin-top:3px}
+#paymentMessage{font-size:10px;line-height:1.5;margin-top:10px;color:#168663}
+@media(max-width:600px){.payment-balance-summary{grid-template-columns:1fr}.payment-balance-summary div{flex-direction:row;justify-content:space-between;align-items:center}}
