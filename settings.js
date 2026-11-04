@@ -62,6 +62,7 @@ if (form) {
         .upsert(record, { onConflict: 'user_id' });
 
       if (error) throw error;
+      window.dispatchEvent(new CustomEvent('company-settings-updated', { detail: record }));
       message.textContent = 'Company settings saved to your private workspace.';
     } catch (error) {
       message.textContent = error.message || 'Could not save company settings.';

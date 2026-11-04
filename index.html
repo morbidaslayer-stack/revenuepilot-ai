@@ -35,30 +35,21 @@
 <div class="table-card"><div class="table-scroll"><table><thead><tr><th>CLIENT / INVOICE</th><th>AMOUNT</th><th>DUE DATE / PAID DATE</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="invoiceRows"></tbody></table></div>
 <div class="empty-state hidden" id="emptyState"><div class="empty-icon">▤</div><strong>No invoices found</strong><span>Try another filter or add an invoice.</span></div><div class="table-footer"><span id="invoiceCountLabel">0 invoices</span><span>Amounts shown in USD</span></div></div>
 <section class="followup-section" id="followups"><div class="section-heading compact"><div><div class="eyebrow">NEXT BEST ACTIONS</div><h2>Follow-up priorities</h2><p>Start with the accounts that need attention.</p></div></div><div class="priority-grid" id="priorityCards"></div></section>
-
 <section class="settings-section" id="companySettings">
-  <div class="section-heading compact">
-    <div><div class="eyebrow">WORKSPACE PROFILE</div><h2>Company settings</h2>
-    <p>Manage the business details used in your revenue workspace.</p></div>
-  </div>
-  <div class="settings-card">
-    <form id="companySettingsForm">
-      <div class="settings-grid">
-        <label>Company name<input name="company_name" maxlength="120" placeholder="Your company name" required></label>
-        <label>Contact person<input name="contact_name" maxlength="120" placeholder="Your name"></label>
-        <label>Business email<input name="business_email" type="email" maxlength="254" placeholder="accounts@company.com"></label>
-        <label>Phone number<input name="phone" maxlength="40" placeholder="+1 555 0100"></label>
-        <label>Website<input name="website" type="url" maxlength="255" placeholder="https://company.com"></label>
-        <label>Invoice currency<select name="currency"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — Pound Sterling</option><option value="CAD">CAD — Canadian Dollar</option></select></label>
-        <label>Timezone<input name="timezone" maxlength="80" placeholder="e.g. Africa/Tripoli"></label>
-      </div>
-      <div class="settings-actions"><span id="settingsMessage" role="status"></span><button class="primary-button" id="saveSettingsButton" type="submit">Save company settings</button></div>
-    </form>
-  </div>
+  <div class="section-heading compact"><div><div class="eyebrow">WORKSPACE PROFILE</div><h2>Company settings</h2><p>Manage the business details used in your revenue workspace.</p></div></div>
+  <div class="settings-card"><form id="companySettingsForm"><div class="settings-grid">
+    <label>Company name<input name="company_name" maxlength="120" placeholder="Your company name" required></label>
+    <label>Contact person<input name="contact_name" maxlength="120" placeholder="Your name"></label>
+    <label>Business email<input name="business_email" type="email" maxlength="254" placeholder="accounts@company.com"></label>
+    <label>Phone number<input name="phone" maxlength="40" placeholder="+1 555 0100"></label>
+    <label>Website<input name="website" type="url" maxlength="255" placeholder="https://company.com"></label>
+    <label>Invoice currency<select name="currency"><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — Pound Sterling</option><option value="CAD">CAD — Canadian Dollar</option></select></label>
+    <label>Timezone<input name="timezone" maxlength="80" placeholder="e.g. Africa/Tripoli"></label>
+  </div><div class="settings-actions"><span id="settingsMessage" role="status"></span><button class="primary-button" id="saveSettingsButton" type="submit">Save company settings</button></div></form></div>
 </section>
 <footer>© 2026 RevenuePilot AI <span>·</span> Your revenue, in better hands. <span class="footer-demo">Private cloud workspace</span></footer></section></main></div>
-
 <div class="modal-backdrop hidden" id="invoiceModal"><div class="modal"><div class="modal-head"><div><div class="eyebrow">INVOICE DETAILS</div><h2 id="invoiceModalTitle">Add an invoice</h2></div><button class="close-button" data-close="invoiceModal">×</button></div>
+<p class="modal-description" id="invoiceIssuerNote">Your company profile will be attached to new invoices.</p>
 <form id="invoiceForm"><label>Client name<input name="client" required maxlength="80" placeholder="e.g. Northstar Studio"></label><div class="form-row"><label>Invoice number<input name="number" required maxlength="40" placeholder="INV-1004"></label><label>Amount (USD)<input name="amount" required type="number" min="0.01" step="0.01" placeholder="1250.00"></label></div>
 <div class="form-row"><label>Issue date<input name="issueDate" required type="date"></label><label>Due date<input name="dueDate" required type="date"></label></div><label>Client email <span class="optional">(optional)</span><input name="email" type="email" placeholder="accounts@client.com"></label>
 <div class="modal-actions"><button type="button" class="secondary-button" data-close="invoiceModal">Cancel</button><button type="submit" class="primary-button" id="saveInvoiceButton">Save invoice</button></div></form></div></div>
